@@ -41,3 +41,10 @@ instance Show (ITree a) where
 instance Functor ITree where
     fmap g (Node xs) = Node $ map (fmap g) xs
     fmap g (Leaf h) = Leaf $ g . h
+
+-- The composition of two functors is a functor. Composition
+-- applies the second function to a parameter,
+-- to which the first function applies itself. Type
+-- constructors that are functors take one argument, which is the
+-- argument that is mapped in fmap.
+
