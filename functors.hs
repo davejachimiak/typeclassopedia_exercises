@@ -13,12 +13,10 @@ instance Functor (Either' e) where
 -----------------------------------------------------------------
 -- Both Pair and (,) take 2 arguments to fulfill the value
 -- constructor. The difference between Pair and (,) is that Pair
--- enforces its arguments to have the same type. The arguments to
--- (,) can have different types. This means that (,)'s data
--- constructor must have 2 parameters. This in turn means its
--- functor instance declaration would be `instance Functor ((,) e)'.
--- In its implementation of fmap, `e' doesn't get mapped, but the
--- second argument to (,) does. Contrast this with Pair where its
+-- has a kind of * -> * and (,) has a kind of * -> * -> *.
+-- This means that (,)'s type  constructor has 2 parameters.
+-- The first of (,)'s parameters does not get mapped, but its
+-- second argument does. Contrast this with Pair where its
 -- fmap implementation maps both of its arguments.
 data Pair a = Pair a a deriving Show
 
