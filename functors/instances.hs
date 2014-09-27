@@ -1,15 +1,19 @@
--- Instances
---
 -- 1. Implement Functor instances for Either e and ((->) e).
+
 data Either' e a = Left' e | Right' a deriving Show
 
 instance Functor (Either' e) where
     fmap g (Right' a) = Right' (g a)
     fmap _ (Left' e)  = Left' e
 
--- returns function that expects one argument, e.g., if it compiled:
--- (.) (\_ -> ((->) String))) ((->) Integer)
--- commented below bc already defined in GHC.Base
+-- We can hope ((->) e) to be a functor because it's a partially
+-- applied type constructor with a kind of * -> *. (->) has a kind
+-- of * -> * -> *. This means that the type constructor (->)
+-- needs two arguments to be fulfilled.
+--
+-- The implementation is commented below because it's already
+-- defined in GHC.Base
+--
 -- instance Functor ((->) a) where
 --     fmap = (.)
 
@@ -56,6 +60,8 @@ instance Functor ITree where
 -- 4. Give an example of a type of kind * -> * which cannot be
 --    made an instance of Functor (without using undefined).
 --
+--    TODO
+--
 -----------------------------------------------------------------
 -- 5. Is this statement true or false?
 --
@@ -70,28 +76,3 @@ instance Functor ITree where
 -- constructors that are functors take one argument, which is the
 -- argument that is mapped in fmap.
 
------------------------------------------------------------------
------------------------------------------------------------------
--- Laws
---
--- Functor laws:
--- fmap id = id
--- fmap (g . h) = (fmap g) . (fmap h)
-
--- The following is an evil functor instance. It breaks the first
--- law. Mapping `id' over the List is not equal to calling the
--- List with `id'.
-
-data List a = EmptyList | List [a] deriving (Show, Eq)
-
-instance Functor List where
-    fmap g (List [])   = List []
-    fmap g (List (x:xs)) = List (g x : g x : fmap g xs)
-
--- fmap id (List ["functor", "foul"]) == id (List ["functor", "foul"])
--- False
---
--- fmap id (List ["functor", "foul"])
--- > List ["functor","functor","foul"]
--- id (List ["functor", "foul"])
--- > List ["functor","foul"]
