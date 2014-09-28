@@ -6,10 +6,12 @@ instance Functor (Either' e) where
     fmap g (Right' a) = Right' (g a)
     fmap _ (Left' e)  = Left' e
 
--- We can hope ((->) e) to be a functor because it's a partially
--- applied type constructor with a kind of * -> *. (->) has a kind
--- of * -> * -> *. This means that the type constructor (->)
--- needs two arguments to be fulfilled.
+-- (->) is the type constructor for functions. The first argument
+-- to the constructor represents the function itself. The
+-- application of (->) to some value represents the function
+-- itself, while the application of the next variable in the
+-- type constructor represents the application of that function
+-- to an argument.
 --
 -- The implementation is commented below because it's already
 -- defined in GHC.Base
